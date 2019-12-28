@@ -1,0 +1,17 @@
+p#notice = notice
+
+p
+  strong Name: 
+  span= @author.name
+p
+  strong Website: 
+  = link_to @author.website, @author.website
+p
+  strong Headings:
+  ul
+    - @author.headings.each do |heading|
+      li= heading
+
+=> link_to 'Edit', edit_author_path(@author)
+'|
+=< link_to 'Back', authors_path
