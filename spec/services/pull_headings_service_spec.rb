@@ -9,17 +9,25 @@ RSpec.describe PullHeadingsService do
   describe '#call' do
     subject(:result) { service.call(author) }
 
-    let(:headings) do
-      [
-        'Планы команды IntelliJ Platform на 2020 год',
-        'YouTrack 2019.3: обновленный список задач и многое другое',
-        'IntelliJ IDEA 2019.3: оптимизация производительности и улучшение качества'
-      ]
+    context 'with valid website' do
+      let(:headings) do
+        ['Делаем эффективные инструменты для разработчиков',
+         'Планы команды IntelliJ Platform на 2020 год',
+         'Производительность']
+      end
+
+      it { is_expected.to be_success }
+
+      it 'pulls headings' do
+        result
+        expect(author.headings[0..2]).to eq(headings)
+      end
     end
 
-    it 'pulls headings' do
-      result
-      expect(author.headings[0..2]).to eq(headings)
+    context 'with invalid website' do
+      let(:author) { create(:author, website: 'https://google.com') }
+
+      it { is_expected.to be_failure }
     end
   end
 end
