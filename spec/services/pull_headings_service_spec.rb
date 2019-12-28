@@ -9,7 +9,7 @@ RSpec.describe PullHeadingsService do
   describe '#call' do
     subject(:result) { service.call(author) }
 
-    context 'with valid website' do
+    context 'with valid website', vcr: { cassette_name: 'jetbrains' } do
       let(:headings) do
         ['Делаем эффективные инструменты для разработчиков',
          'Планы команды IntelliJ Platform на 2020 год',
@@ -24,7 +24,7 @@ RSpec.describe PullHeadingsService do
       end
     end
 
-    context 'with invalid website' do
+    context 'with invalid website', vcr: { cassette_name: 'google' } do
       let(:author) { create(:author, website: 'https://google.com') }
 
       it { is_expected.to be_failure }
